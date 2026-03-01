@@ -53,9 +53,10 @@
     </style>
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="https://cdn.tailwindcss.com" as="script" fetchpriority="high">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" as="style" fetchpriority="high">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+    <!-- Tailwind CSS - 异步加载 -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script" defer>
     
     <!-- 异步加载非关键资源 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -935,7 +936,10 @@
         }
 
         async function testNodeSequentially(node, index) {
+            // 批量获取DOM元素
             const card = document.getElementById(`card-${index}`);
+            if (!card) return;
+            
             const dot = document.getElementById(`dot-${index}`);
             const text = document.getElementById(`text-${index}`);
             const jitterIcon = document.getElementById(`jitter-${index}`);
@@ -949,14 +953,10 @@
             dot.className = "ping-dot bg-slate-500 animate-pulse";
 
             let latency = 9999;
-            let success = false;
 
             try {
                 // 使用精准的测速方法
                 latency = await accurateSpeedTest(node.url);
-                if (latency < TIMEOUT_MS) {
-                    success = true;
-                }
             } catch (error) {
                 console.log(`节点 ${node.name} 测速失败:`, error);
             }
@@ -964,7 +964,7 @@
             // 移除当前测试标记
             card.classList.remove('testing-now');
 
-            if (success && latency < TIMEOUT_MS) {
+            if (latency < TIMEOUT_MS) {
                 node.history.push(latency);
                 if (node.history.length > 3) node.history.shift();
 
@@ -987,6 +987,7 @@
                 // 颜色判断逻辑：秒数越低越绿
                 const latencySeconds = latency / 1000;
                 
+                // 一次性更新所有DOM属性
                 if(latencySeconds < 0.1) {
                     text.className = "font-mono text-sm font-bold text-green-400 status-fast";
                     dot.className = "ping-dot bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]";
@@ -1026,14 +1027,19 @@
             updateProgressText();
         }
 
-        // 精准测速方法
+        // 精准测速方法 - 优化版本
         async function accurateSpeedTest(url) {
+            // 跳过空URL或无效URL
+            if (!url || url === 'https://') {
+                return Promise.resolve(9999);
+            }
+            
             return new Promise((resolve, reject) => {
                 const startTime = performance.now();
                 const img = new Image();
                 const timeoutId = setTimeout(() => {
                     img.onload = img.onerror = null;
-                    reject(new Error('Timeout'));
+                    resolve(9999); // 直接返回超时值
                 }, TIMEOUT_MS);
 
                 img.onload = img.onerror = () => {
@@ -1043,7 +1049,7 @@
                 };
 
                 // 使用缓存破坏参数
-                img.src = `${url}/cy.txt?t=${Date.now()}&cache=${Math.random()}`;
+                img.src = `${url}/cy.txt?t=${Date.now()}`;
             });
         }
 
