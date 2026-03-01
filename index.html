@@ -70,34 +70,10 @@
     <!-- 不蒜子统计 -->
     <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer async></script>
     
-    <!-- Google AdSense - 使用 Intersection Observer 延迟加载 -->
+    <!-- Google AdSense - 优化加载逻辑 -->
     <script>
-        // 使用 Intersection Observer 检测广告位是否进入视口
-        if ('IntersectionObserver' in window) {
-            var adObserver = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        // 广告位进入视口后才加载AdSense脚本
-                        loadAdSenseScript();
-                        adObserver.disconnect();
-                    }
-                });
-            }, { rootMargin: '100px' });
-            
-            // 观察广告位
-            document.addEventListener('DOMContentLoaded', function() {
-                var adContainer = document.getElementById('client-download-section');
-                if (adContainer) {
-                    adObserver.observe(adContainer);
-                }
-            });
-        } else {
-            // 降级方案：页面加载后延迟加载
-            window.addEventListener('load', function() {
-                setTimeout(loadAdSenseScript, 3000);
-            });
-        }
-        
+        // 直接加载AdSense脚本，不使用Intersection Observer
+        // 这样可以确保脚本在广告初始化时已经加载完成
         function loadAdSenseScript() {
             // 检查是否已加载
             if (window.adsbygoogle && window.adsbygoogle.loaded) return;
@@ -108,6 +84,25 @@
             script.crossOrigin = 'anonymous';
             document.head.appendChild(script);
         }
+        
+        // 页面加载完成后立即加载AdSense脚本
+        window.addEventListener('load', function() {
+            loadAdSenseScript();
+            
+            // 延迟一点时间确保脚本加载完成
+            setTimeout(function() {
+                try {
+                    // 直接初始化广告
+                    var ads = document.querySelectorAll('.adsbygoogle');
+                    if (ads.length > 0) {
+                        console.log('初始化AdSense广告...');
+                        (window.adsbygoogle = window.adsbygoogle || []).push({});
+                    }
+                } catch (e) {
+                    console.error('AdSense初始化失败:', e);
+                }
+            }, 1000);
+        });
     </script>
 
     <style>
@@ -323,6 +318,8 @@
 	<!-- Google AdSense 广告代码 -->
 	<meta name="google-adsense-account" content="ca-pub-6155137717903643">
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6155137717903643" crossorigin="anonymous"></script>
+	<!-- monetag广告 -->
+	<meta name="monetag" content="8406067bf8273b3e6954893eb07cab46">
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -630,6 +627,7 @@
         // 节点数据
         const nodes = [
             { name: "在线PS", url: "https://ps.mmaiverse.com", history: [], retryCount: 0 },
+			{ name: "IP查询", url: "https://ip.mmaiverse.com", history: [], retryCount: 0 },
         ];
 
         const openclawNodes = [
@@ -1377,61 +1375,7 @@ if (autoBtn) {
 
         window.onload = initHtml;
         
-        // 初始化Google AdSense广告
-        (function() {
-            // 等待页面加载完成
-            if (document.readyState === 'complete') {
-                initAds();
-            } else {
-                window.addEventListener('load', initAds);
-            }
-            
-            function initAds() {
-                // 延迟初始化广告，确保AdSense脚本已加载
-                setTimeout(function() {
-                    try {
-                        console.log('开始初始化AdSense广告...');
-                        console.log('window.adsbygoogle是否存在:', typeof window.adsbygoogle);
-                        
-                        var ads = document.querySelectorAll('.adsbygoogle');
-                        console.log('找到广告位数量:', ads.length);
-                        
-                        if (ads.length === 0) {
-                            console.warn('未找到广告位元素');
-                            return;
-                        }
-                        
-                        var adLoaded = false;
-                        ads.forEach(function(ad, index) {
-                            console.log(`处理广告位 ${index}:`, ad);
-                            if (ad && !ad.getAttribute('data-adsbygoogle-status')) {
-                                console.log('初始化广告位:', ad);
-                                (window.adsbygoogle = window.adsbygoogle || []).push({});
-                                adLoaded = true;
-                            } else {
-                                console.log('广告位已初始化或跳过');
-                                if (ad.getAttribute('data-adsbygoogle-status')) {
-                                    adLoaded = true;
-                                }
-                            }
-                        });
-                        
-                        console.log('AdSense初始化完成, 广告已加载:', adLoaded);
-                        
-                        // 如果广告没有加载，显示占位符
-                        if (!adLoaded) {
-                            var placeholder = document.getElementById('ad-placeholder');
-                            if (placeholder) {
-                                placeholder.classList.remove('hidden');
-                                placeholder.innerHTML = '<i class="fa-solid fa-ad text-2xl mb-2"></i><p>广告暂未加载<br><span class="text-xs">本地环境或广告审核中</span></p>';
-                            }
-                        }
-                    } catch (e) {
-                        console.error('AdSense初始化失败:', e);
-                    }
-                }, 1000);
-            }
-        })();
+        // Google AdSense广告已在页面加载时初始化
     </script>
     <!-- Cloudflare Analytics - 延迟加载以提高性能 -->
     <script>
