@@ -35,14 +35,12 @@
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
     <link rel="modulepreload" href="/index.html">
     
-    <!-- 异步加载非关键CSS -->
+    <!-- 异步加载FontAwesome - 延迟到页面加载后 -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
-    <!-- 预加载Cloudflare字体文件 -->
+    <!-- 预加载关键字体文件（只预加载最常用的solid字体） -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- 异步加载字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -69,15 +67,44 @@
     <!-- 不蒜子统计 -->
     <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer async></script>
     
-    <!-- Google AdSense - 延迟加载以提高性能 -->
+    <!-- Google AdSense - 使用 Intersection Observer 延迟加载 -->
     <script>
-        window.addEventListener('load', function() {
+        // 使用 Intersection Observer 检测广告位是否进入视口
+        if ('IntersectionObserver' in window) {
+            var adObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        // 广告位进入视口后才加载AdSense脚本
+                        loadAdSenseScript();
+                        adObserver.disconnect();
+                    }
+                });
+            }, { rootMargin: '100px' });
+            
+            // 观察广告位
+            document.addEventListener('DOMContentLoaded', function() {
+                var adContainer = document.getElementById('client-download-section');
+                if (adContainer) {
+                    adObserver.observe(adContainer);
+                }
+            });
+        } else {
+            // 降级方案：页面加载后延迟加载
+            window.addEventListener('load', function() {
+                setTimeout(loadAdSenseScript, 3000);
+            });
+        }
+        
+        function loadAdSenseScript() {
+            // 检查是否已加载
+            if (window.adsbygoogle && window.adsbygoogle.loaded) return;
+            
             var script = document.createElement('script');
             script.async = true;
             script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6155137717903643';
             script.crossOrigin = 'anonymous';
             document.head.appendChild(script);
-        });
+        }
     </script>
 
     <style>
@@ -348,7 +375,7 @@
                                 <i class="fa-solid fa-clock text-blue-400 text-xs"></i>
                                 <p class="text-xs text-slate-400">
                                     <span id="current-testing">准备开始检测</span> · 
-                                    <span id="progress-text">0/13</span> · 
+                                    <span id="progress-text">0/0</span> · 
                                     <span id="next-test-timer">60秒后刷新</span>
                                 </p>
                             </div>
@@ -654,7 +681,7 @@
         let countdownTimer = null;
         let countdownSeconds = 8;
         let currentStats = {
-            total: nodes.length,
+            total: 0,
             completed: 0,
             active: 0,
             totalLatency: 0
@@ -810,6 +837,9 @@
             });
             if (deleteContainer) deleteContainer.innerHTML = deleteHtml;
             
+            // 初始化时更新进度显示的总数
+            updateProgressText();
+            
             // 更新自动刷新按钮状态
             updateAutoRefreshButton();
             
@@ -873,8 +903,8 @@
             // 立即更新一次显示
             updateCountdownDisplay();
             
-            // 每100ms更新一次计时器和进度条
-            timerBarInterval = setInterval(updateCountdownDisplay, 100);
+            // 每500ms更新一次计时器和进度条，减少主线程负担
+            timerBarInterval = setInterval(updateCountdownDisplay, 500);
             
             // 设置60秒后的定时器
             refreshTimer = setTimeout(() => {
@@ -898,8 +928,12 @@
             
             refreshIcon.classList.add('fa-spin');
             
-            currentStats = { total: nodes.length, completed: 0, active: 0, totalLatency: 0 };
+            const totalNodes = getTotalNodesCount();
+            currentStats = { total: totalNodes, completed: 0, active: 0, totalLatency: 0 };
             currentTestIndex = 0;
+            
+            // 更新进度显示的总数
+            updateProgressText();
             
             // 初始化所有节点状态
             nodes.forEach((node, index) => {
@@ -1079,8 +1113,14 @@
             });
         }
 
+        // 计算所有区域的总节点数
+        function getTotalNodesCount() {
+            return nodes.length + openclawNodes.length + vpsNodes.length + sshNodes.length + deleteNodes.length;
+        }
+
         function updateProgressText() {
-            progressTextEl.innerText = `${currentStats.completed}/${nodes.length}`;
+            const totalNodes = getTotalNodesCount();
+            progressTextEl.innerText = `${currentStats.completed}/${totalNodes}`;
         }
 
         // ================= 检测其他区域 =================
@@ -1170,6 +1210,10 @@
                 dot.className = "ping-dot bg-red-600";
                 card.setAttribute('data-latency', '9999');
             }
+            
+            // 增加已完成计数并更新进度
+            currentStats.completed++;
+            updateProgressText();
         }
 
         // ================= 其他功能 =================
