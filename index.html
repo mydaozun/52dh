@@ -9,6 +9,9 @@
     <meta name="keywords" content="网址导航,线路检测,VPS服务器,OpenClaw AI,在线PS,工具,网络工具,延迟检测,服务器监控,AI助手,在线工具箱">
     <meta name="author" content="52DH">
     <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#0f172a">
     <meta property="og:title" content="52DH - 智能网址导航 | 线路检测 | VPS服务器 | AI工具">
     <meta property="og:description" content="52DH智能网址导航，提供实时线路检测、VPS服务器推荐、OpenClaw AI工具等实用服务。">
     <meta property="og:type" content="website">
@@ -20,18 +23,54 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
+    <!-- 预连接到Google AdSense CDN -->
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net">
+    
     <!-- 异步加载非关键CSS -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
+    <!-- 预加载Cloudflare字体文件 -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+    
     <!-- 异步加载字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            font-display: swap;
+        }
+        
+        /* 优化FontAwesome字体加载 */
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Font Awesome 6 Brands';
+            font-display: swap;
+        }
+    </style>
     
     <!-- Tailwind CSS - 使用defer加载配置 -->
     <script src="https://cdn.tailwindcss.com" defer></script>
     
     <!-- 不蒜子统计 -->
     <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer async></script>
+    
+    <!-- Google AdSense - 延迟加载以提高性能 -->
+    <script>
+        window.addEventListener('load', function() {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6155137717903643';
+            script.crossOrigin = 'anonymous';
+            document.head.appendChild(script);
+        });
+    </script>
 
     <style>
         body {
@@ -339,7 +378,7 @@
 
                 <div class="flex-1 flex flex-col mt-6" id="openclaw-section">
                     <div class="flex items-center gap-2 mb-3 px-1">
-                        <i class="fa-solid fa-brain text-purple-400"></i>
+                        <i class="fa-solid fa-shrimp text-purple-400"></i>
                         <h2 class="font-semibold text-white">OpenClaw AI</h2>
                         <span class="text-xs text-slate-500 ml-auto">AI工具集合</span>
                     </div>
@@ -390,15 +429,18 @@
                     <h3 class="font-semibold text-white mb-4 text-sm flex items-center gap-2">
                         <i class="fa-solid fa-ad text-slate-400"></i> 广告位
                     </h3>
+                    <!-- 纵向自适合 -->
                     <ins class="adsbygoogle"
                          style="display:block"
                          data-ad-client="ca-pub-6155137717903643"
-                         data-ad-slot="1234567890"
+                         data-ad-slot="9246921009"
                          data-ad-format="auto"
                          data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
+                    <!-- 广告加载失败时的占位符 -->
+                    <div id="ad-placeholder" class="hidden text-center py-8 text-slate-500 text-sm">
+                        <i class="fa-solid fa-ad text-2xl mb-2"></i>
+                        <p>广告加载中...</p>
+                    </div>
                 </div>
 
                 <div id="float-nav" class="glass-panel rounded-xl p-5 fixed right-0 top-24 w-64 z-50 max-h-[calc(100vh-120px)] overflow-y-auto transform translate-x-[calc(100%-2rem)] hover:translate-x-0 transition-transform duration-300 ease-out">
@@ -418,7 +460,7 @@
                         </a>
                         <a href="#openclaw-section" onclick="scrollToSection('openclaw-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-brain text-purple-400 text-lg"></i>
+                                <i class="fa-solid fa-shrimp text-purple-400 text-lg"></i>
                                 <span class="text-sm text-slate-300 group-hover:text-white">OpenClaw AI</span>
                             </div>
                             <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
@@ -1345,7 +1387,76 @@ if (autoBtn) {
         })();
 
         window.onload = initHtml;
+        
+        // 初始化Google AdSense广告
+        (function() {
+            // 等待页面加载完成
+            if (document.readyState === 'complete') {
+                initAds();
+            } else {
+                window.addEventListener('load', initAds);
+            }
+            
+            function initAds() {
+                // 延迟初始化广告，确保AdSense脚本已加载
+                setTimeout(function() {
+                    try {
+                        console.log('开始初始化AdSense广告...');
+                        console.log('window.adsbygoogle是否存在:', typeof window.adsbygoogle);
+                        
+                        var ads = document.querySelectorAll('.adsbygoogle');
+                        console.log('找到广告位数量:', ads.length);
+                        
+                        if (ads.length === 0) {
+                            console.warn('未找到广告位元素');
+                            return;
+                        }
+                        
+                        var adLoaded = false;
+                        ads.forEach(function(ad, index) {
+                            console.log(`处理广告位 ${index}:`, ad);
+                            if (ad && !ad.getAttribute('data-adsbygoogle-status')) {
+                                console.log('初始化广告位:', ad);
+                                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                                adLoaded = true;
+                            } else {
+                                console.log('广告位已初始化或跳过');
+                                if (ad.getAttribute('data-adsbygoogle-status')) {
+                                    adLoaded = true;
+                                }
+                            }
+                        });
+                        
+                        console.log('AdSense初始化完成, 广告已加载:', adLoaded);
+                        
+                        // 如果广告没有加载，显示占位符
+                        if (!adLoaded) {
+                            var placeholder = document.getElementById('ad-placeholder');
+                            if (placeholder) {
+                                placeholder.classList.remove('hidden');
+                                placeholder.innerHTML = '<i class="fa-solid fa-ad text-2xl mb-2"></i><p>广告暂未加载<br><span class="text-xs">本地环境或广告审核中</span></p>';
+                            }
+                        }
+                    } catch (e) {
+                        console.error('AdSense初始化失败:', e);
+                    }
+                }, 1000);
+            }
+        })();
     </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"ff02c1a0ecd64702a05c28d4b7e797e3","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+    <!-- Cloudflare Analytics - 延迟加载以提高性能 -->
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var script = document.createElement('script');
+                script.defer = true;
+                script.src = 'https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015';
+                script.integrity = 'sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==';
+                script.setAttribute('data-cf-beacon', '{"version":"2024.11.0","token":"ff02c1a0ecd64702a05c28d4b7e797e3","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}');
+                script.crossOrigin = 'anonymous';
+                document.body.appendChild(script);
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
