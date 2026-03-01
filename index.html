@@ -23,9 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- 预连接到Google AdSense CDN -->
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net">
+
     
     <!-- 预连接到Cloudflare Analytics -->
     <link rel="preconnect" href="https://static.cloudflareinsights.com">
@@ -70,126 +68,7 @@
     <!-- 不蒜子统计 -->
     <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer async></script>
     
-    <!-- Google AdSense - 优化加载逻辑 -->
-    <script>
-        // 直接加载AdSense脚本
-        function loadAdSenseScript() {
-            // 检查是否已加载
-            if (window.adsbygoogle && window.adsbygoogle.loaded) {
-                console.log('AdSense脚本已加载');
-                initAdSense();
-                return;
-            }
-            
-            console.log('开始加载AdSense脚本...');
-            var script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6155137717903643';
-            script.crossOrigin = 'anonymous';
-            
-            script.onload = function() {
-                console.log('AdSense脚本加载成功');
-                initAdSense();
-            };
-            
-            script.onerror = function() {
-                console.error('AdSense脚本加载失败');
-                // 显示广告占位符
-                document.getElementById('ad-placeholder').classList.remove('hidden');
-            };
-            
-            document.head.appendChild(script);
-        }
-        
-        // 初始化AdSense广告
-        function initAdSense() {
-            try {
-                var ads = document.querySelectorAll('.adsbygoogle');
-                console.log('找到AdSense广告位数量:', ads.length);
-                
-                if (ads.length > 0) {
-                    console.log('初始化AdSense广告...');
-                    (window.adsbygoogle = window.adsbygoogle || []).push({});
-                    console.log('AdSense广告初始化完成');
-                    
-                    // 为每个广告添加加载状态监控
-                    ads.forEach(function(ad, index) {
-                        console.log('监控AdSense广告', index, '加载状态');
-                    });
-                }
-            } catch (e) {
-                console.error('AdSense初始化失败:', e);
-                // 显示广告占位符
-                document.getElementById('ad-placeholder').classList.remove('hidden');
-            }
-        }
-        
-        // 页面加载完成后立即加载AdSense脚本
-        window.addEventListener('load', function() {
-            console.log('页面加载完成，开始处理广告...');
-            loadAdSenseScript();
-        });
-    </script>
-    
-    <!-- 5G广告加载监控 -->
-    <script>
-        // 监控5G广告脚本加载
-        window.addEventListener('load', function() {
-            console.log('检查5G广告脚本...');
-            
-            // 检查5G广告脚本是否已加载
-            var scripts = document.querySelectorAll('script[src*="5gvci.com"]');
-            console.log('找到5G广告脚本数量:', scripts.length);
-            
-            scripts.forEach(function(script, index) {
-                console.log('5G广告脚本', index, ':', script.src);
-                
-                // 添加加载监控
-                script.onload = function() {
-                    console.log('5G广告脚本加载成功:', script.src);
-                };
-                
-                script.onerror = function() {
-                    console.error('5G广告脚本加载失败:', script.src);
-                };
-            });
-        });
-        
-        // 页面加载完成后检查广告状态
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                console.log('检查广告加载状态...');
-                
-                // 检查AdSense广告
-                var adsenseAds = document.querySelectorAll('.adsbygoogle');
-                adsenseAds.forEach(function(ad, index) {
-                    var adHeight = ad.offsetHeight;
-                    console.log('AdSense广告', index, '高度:', adHeight);
-                    if (adHeight < 20) {
-                        console.warn('AdSense广告', index, '可能未加载成功');
-                        // 显示占位符
-                        document.getElementById('ad-placeholder').classList.remove('hidden');
-                    } else {
-                        console.log('AdSense广告', index, '加载成功');
-                    }
-                });
-                
-                // 检查5G广告容器
-                var fiveGContainer = document.getElementById('fiveg-ad-container');
-                if (fiveGContainer) {
-                    var containerHeight = fiveGContainer.offsetHeight;
-                    console.log('5G广告容器高度:', containerHeight);
-                    if (containerHeight < 50) {
-                        console.warn('5G广告可能未加载成功');
-                        // 显示占位符
-                        document.getElementById('fiveg-ad-placeholder').classList.remove('hidden');
-                    } else {
-                        console.log('5G广告加载成功');
-                    }
-                }
-            }, 5000); // 5秒后检查，确保广告有足够时间加载
-        });
-    </script>
+
 
     <style>
         body {
@@ -402,9 +281,10 @@
         }
     </style>
 	<!-- Google AdSense 广告代码 -->
-	<meta name="google-adsense-account" content="ca-pub-6155137717903643">
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6155137717903643"
+     crossorigin="anonymous"></script>
 	<!-- monetag广告 -->
-	<meta name="monetag" content="8406067bf8273b3e6954893eb07cab46">
+	<script src="https://5gvci.com/act/files/tag.min.js?z=10669244" data-cfasync="false" async></script>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -490,7 +370,7 @@
                 <div class="flex-1 flex flex-col" id="nodes-section"> 
                     <div class="flex items-center gap-2 mb-3 px-1">
                         <i class="fa-solid fa-network-wired text-blue-400"></i>
-                        <h2 class="font-semibold text-white">官网线路选择[点击下方跳转]</h2>
+                        <h2 class="font-semibold text-white">在线小工具[点击下方跳转]</h2>
                         <span class="text-xs text-slate-500 ml-auto flex items-center gap-2">
                             <i class="fa-solid fa-rotate"></i> 每60秒自动检测
                         </span>
@@ -548,41 +428,7 @@
                     </a>
                 </div>
 
-                <div class="glass-panel rounded-xl p-5" id="client-download-section">
-                    <h3 class="font-semibold text-white mb-4 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-ad text-slate-400"></i> 广告位
-                    </h3>
-                    <!-- 纵向自适合 -->
-                    <div class="ad-container" style="min-height: 300px; width: 100%;">
-                        <ins class="adsbygoogle"
-                             style="display:block; width: 100%; height: 300px;"
-                             data-ad-client="ca-pub-6155137717903643"
-                             data-ad-slot="9246921009"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                    </div>
-                    <!-- 广告加载失败时的占位符 -->
-                    <div id="ad-placeholder" class="hidden text-center py-8 text-slate-500 text-sm">
-                        <i class="fa-solid fa-ad text-2xl mb-2"></i>
-                        <p>广告加载中...</p>
-                    </div>
-                </div>
-                
-                <!-- 第二个广告位 -->
-                <div class="glass-panel rounded-xl p-5 mt-4">
-                    <h3 class="font-semibold text-white mb-4 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-ad text-slate-400"></i> 广告位
-                    </h3>
-                    <!-- 5G广告 -->
-                    <div class="ad-container" style="min-height: 250px; width: 100%;" id="fiveg-ad-container">
-                        <script src="https://5gvci.com/act/files/tag.min.js?z=10669244" data-cfasync="false" async></script>
-                    </div>
-                    <!-- 广告加载失败时的占位符 -->
-                    <div id="fiveg-ad-placeholder" class="hidden text-center py-8 text-slate-500 text-sm">
-                        <i class="fa-solid fa-ad text-2xl mb-2"></i>
-                        <p>广告加载中...</p>
-                    </div>
-                </div>
+
 
                 <div id="float-nav" class="glass-panel rounded-xl p-5 fixed right-0 top-24 w-64 z-50 max-h-[calc(100vh-120px)] overflow-y-auto transform translate-x-[calc(100%-2rem)] hover:translate-x-0 transition-transform duration-300 ease-out">
                     <div class="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-pointer">
@@ -595,7 +441,7 @@
                         <a href="#nodes-section" onclick="scrollToSection('nodes-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <i class="fa-solid fa-network-wired text-blue-400 text-lg"></i>
-                                <span class="text-sm text-slate-300 group-hover:text-white">官网线路</span>
+                                <span class="text-sm text-slate-300 group-hover:text-white">在线小工具</span>
                             </div>
                             <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
                         </a>
