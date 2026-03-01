@@ -14,11 +14,24 @@
     <meta property="og:type" content="website">
     <meta property="og:locale" content="zh_CN">
     <link rel="canonical" href="https://52dh.cc.cd/">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%2360a5fa' d='M0 336c0 79.5 64.5 144 144 144s144-64.5 144-144-64.5-144-144-144S0 256.5 0 336zm128 0c0-35.3 28.7-64 64-64s64 28.7 64 64-28.7 64-64 64-64-28.7-64-64zm352-64c0 61.9-50.1 112-112 112s-112-50.1-112-112 50.1-112 112-112 112 50.1 112 112zm-64 0c0-26.5-21.5-48-48-48s-48 21.5-48 48 21.5 48 48 48 48-21.5 48-48zm-32-144c0 44.2-35.8 80-80 80s-80-35.8-80-80 35.8-80 80-80 80 35.8 80 80zm-48 0c0-17.7-14.3-32-32-32s-32 14.3-32 32 14.3 32 32 32 32-14.3 32-32z'/></svg>">
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- 异步加载非关键CSS -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <!-- 异步加载字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <!-- Tailwind CSS - 使用defer加载配置 -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    
     <!-- 不蒜子统计 -->
-   <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer></script>
+    <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer async></script>
 
     <style>
         body {
@@ -35,11 +48,18 @@
         }
         .blob {
             position: absolute;
-            filter: blur(90px); opacity: 0.5; animation: move 20s infinite alternate;
+            filter: blur(90px); opacity: 0.5; 
+            will-change: transform;
+        }
+        /* 移除动画以减少CPU使用，或使用更高效的动画 */
+        @media (prefers-reduced-motion: no-preference) {
+            .blob {
+                animation: move 20s infinite alternate;
+            }
         }
         @keyframes move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 30px); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(50px, 30px, 0); }
         }
         
         .glass-panel {
@@ -291,7 +311,7 @@
                     <div class="flex w-full md:w-auto justify-around md:justify-end gap-6 md:gap-12">
                         <div class="flex flex-col items-center">
                             <div class="text-2xl font-bold text-white" id="online-count">0</div>
-                            <div class="text-[11px] text-slate-500 uppercase tracking-wide mt-1">可用官网</div>
+                            <div class="text-[11px] text-slate-500 uppercase tracking-wide mt-1">可用服务</div>
                         </div>
                         <div class="flex flex-col items-center">
                             <div class="text-2xl font-bold text-slate-400" id="avg-latency">--s</div>
@@ -539,7 +559,7 @@
 			
         ];
 
-        const dataNodes = [
+        const vpsNodes = [
             { name: "vultr", url: "https://www.vultr.com/?ref=9874697", history: [], retryCount: 0 },
             { name: "zeabur优惠码：mydaozun", url: "https://zeabur.cn", history: [], retryCount: 0 },
             
@@ -592,6 +612,14 @@
         let affiliateCode = null;
         let isTesting = false;
         let currentTestIndex = 0;
+        
+        // 全局统计 - 所有区域
+        let globalStats = {
+            totalActive: 0,
+            totalNodes: 0,
+            totalLatency: 0
+        };
+        
         // ================= 初始化 =================
         function initHtml() {
             const params = new URLSearchParams(window.location.search);
@@ -671,7 +699,7 @@
 
             // 渲染 Data 区域
             let dataHtml = '';
-            dataNodes.forEach((node, index) => {
+            vpsNodes.forEach((node, index) => {
                 let i = index + 1;
                 dataHtml += `
                 <a href="${node.url}" target="_blank" class="node-card rounded-xl p-5 flex flex-col justify-between min-h-[110px] group relative" id="data-card-${index}" data-index="${index}" data-latency="9999">
@@ -735,10 +763,17 @@
             // 更新自动刷新按钮状态
             updateAutoRefreshButton();
             
-            // 初始化完成后立即开始检测
-            setTimeout(() => {
-                checkAllNodesSequentially();
-            }, 1000);
+            // 使用 requestIdleCallback 在浏览器空闲时开始检测，避免阻塞页面渲染
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    checkAllNodesSequentially();
+                }, { timeout: 2000 });
+            } else {
+                // 降级方案：延迟2秒开始检测
+                setTimeout(() => {
+                    checkAllNodesSequentially();
+                }, 2000);
+            }
         }
 
         // 更新自动刷新按钮状态
@@ -803,7 +838,7 @@
             countdownTimer = timerBarInterval;
         }
 
-        // ================= 单线程顺序测速逻辑 =================
+        // ================= 优化的测速逻辑 - 使用并发检测 =================
         async function checkAllNodesSequentially() {
             if (isTesting) return;
             
@@ -833,15 +868,31 @@
                 jitterIcon.classList.add('opacity-0');
             });
 
-            // 开始顺序测试
-            for (let i = 0; i < nodes.length; i++) {
-                if (!isTesting) break; // 如果用户停止了测试
+            // 使用并发检测，但限制并发数以避免浏览器限制
+            const CONCURRENT_LIMIT = 3; // 同时检测3个节点
+            const batches = [];
+            
+            // 将节点分批
+            for (let i = 0; i < nodes.length; i += CONCURRENT_LIMIT) {
+                batches.push(nodes.slice(i, i + CONCURRENT_LIMIT));
+            }
+            
+            // 分批并发检测
+            for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
+                if (!isTesting) break;
                 
-                currentTestIndex = i;
-                await testNodeSequentially(nodes[i], i);
+                const batch = batches[batchIndex];
+                const startIndex = batchIndex * CONCURRENT_LIMIT;
                 
-                // 节点间延迟，避免请求过于密集
-                if (i < nodes.length - 1) {
+                // 并发检测当前批次
+                await Promise.all(batch.map((node, idx) => {
+                    const nodeIndex = startIndex + idx;
+                    currentTestIndex = nodeIndex;
+                    return testNodeSequentially(node, nodeIndex);
+                }));
+                
+                // 批次间短暂延迟
+                if (batchIndex < batches.length - 1) {
                     await new Promise(resolve => setTimeout(resolve, TEST_DELAY));
                 }
             }
@@ -985,14 +1036,18 @@
         // ================= 检测其他区域 =================
         async function checkOtherRegions() {
             await checkRegion('openclaw', openclawNodes);
-            await checkRegion('data', dataNodes);
+            await checkRegion('data', vpsNodes);
             await checkRegion('ssh', sshNodes);
             await checkRegion('delete', deleteNodes);
+            // 所有区域检测完成后更新统计
+            updateHeaderStats();
         }
 
         async function checkRegion(prefix, regionNodes) {
             for (let i = 0; i < regionNodes.length; i++) {
                 await testRegionNode(regionNodes[i], i, prefix);
+                // 每个节点检测完成后更新统计
+                updateHeaderStats();
                 if (i < regionNodes.length - 1) {
                     await new Promise(resolve => setTimeout(resolve, TEST_DELAY));
                 }
@@ -1094,9 +1149,49 @@
         }
 
         function updateHeaderStats() {
-            const count = currentStats.active;
-            const avg = count > 0 ? Math.round(currentStats.totalLatency / count) : 0;
-            const rate = Math.round((count / nodes.length) * 100);
+            // 计算所有区域的总数
+            const allNodes = [...nodes, ...openclawNodes, ...vpsNodes];
+            const totalCount = allNodes.length;
+            
+            // 统计所有区域的活跃节点
+            let totalActive = 0;
+            let totalLatency = 0;
+            
+            // 统计nodes区域
+            totalActive += currentStats.active;
+            totalLatency += currentStats.totalLatency;
+            
+            // 统计openclaw区域
+            openclawNodes.forEach((node, index) => {
+                const card = document.getElementById(`openclaw-card-${index}`);
+                if (card) {
+                    const latency = parseInt(card.getAttribute('data-latency'));
+                    if (latency && latency < 9999) {
+                        totalActive++;
+                        totalLatency += latency;
+                    }
+                }
+            });
+            
+            // 统计data区域
+            vpsNodes.forEach((node, index) => {
+                const card = document.getElementById(`data-card-${index}`);
+                if (card) {
+                    const latency = parseInt(card.getAttribute('data-latency'));
+                    if (latency && latency < 9999) {
+                        totalActive++;
+                        totalLatency += latency;
+                    }
+                }
+            });
+            
+            globalStats.totalActive = totalActive;
+            globalStats.totalNodes = totalCount;
+            globalStats.totalLatency = totalLatency;
+            
+            const count = totalActive;
+            const avg = count > 0 ? Math.round(totalLatency / count) : 0;
+            const rate = Math.round((count / totalCount) * 100);
             
             onlineCountEl.innerText = count;
             const avgSeconds = avg / 1000;
@@ -1118,7 +1213,7 @@
             }
 
             if(currentStats.completed === currentStats.total) {
-                if(count >= 10) {
+                if(count >= 5) {
                     if (autoRefresh) {
                         systemStatusText.innerText = "自动检测运行中";
                         statusIcon.className = "fa-solid fa-rotate text-blue-400 text-lg animate-spin";
@@ -1128,7 +1223,7 @@
                         statusIcon.className = "fa-solid fa-heart-pulse text-green-400 text-lg";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0";
                     }
-                } else if (count >= 5) {
+                } else if (count >= 3) {
                     if (autoRefresh) {
                         systemStatusText.innerText = "自动检测运行中";
                         statusIcon.className = "fa-solid fa-rotate text-blue-400 text-lg animate-spin";
