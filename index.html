@@ -27,6 +27,14 @@
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net">
     
+    <!-- 预连接到Cloudflare Analytics -->
+    <link rel="preconnect" href="https://static.cloudflareinsights.com">
+    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com">
+    
+    <!-- 预加载关键CSS和JS -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="modulepreload" href="/index.html">
+    
     <!-- 异步加载非关键CSS -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
@@ -1457,6 +1465,96 @@ if (autoBtn) {
                 document.body.appendChild(script);
             }, 2000);
         });
+    </script>
+    
+    <!-- Service Worker 缓存策略 - 提高重访速度 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript,' + encodeURIComponent(`
+                const CACHE_NAME = '52dh-v1';
+                const STATIC_ASSETS = [
+                    '/',
+                    '/index.html'
+                ];
+                
+                // 安装时缓存静态资源
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then(cache => {
+                            return cache.addAll(STATIC_ASSETS);
+                        })
+                    );
+                });
+                
+                // 激活时清理旧缓存
+                self.addEventListener('activate', event => {
+                    event.waitUntil(
+                        caches.keys().then(cacheNames => {
+                            return Promise.all(
+                                cacheNames
+                                    .filter(name => name !== CACHE_NAME)
+                                    .map(name => caches.delete(name))
+                            );
+                        })
+                    );
+                });
+                
+                // 拦截请求并使用缓存策略
+                self.addEventListener('fetch', event => {
+                    const { request } = event;
+                    const url = new URL(request.url);
+                    
+                    // CDN资源使用Stale-While-Revalidate策略
+                    if (url.hostname.includes('cdnjs.cloudflare.com') || 
+                        url.hostname.includes('fonts.googleapis.com') ||
+                        url.hostname.includes('fonts.gstatic.com')) {
+                        event.respondWith(
+                            caches.open(CACHE_NAME).then(cache => {
+                                return cache.match(request).then(response => {
+                                    const fetchPromise = fetch(request).then(networkResponse => {
+                                        cache.put(request, networkResponse.clone());
+                                        return networkResponse;
+                                    });
+                                    return response || fetchPromise;
+                                });
+                            })
+                        );
+                        return;
+                    }
+                    
+                    // Google AdSense资源使用Network First策略
+                    if (url.hostname.includes('googlesyndication.com') ||
+                        url.hostname.includes('doubleclick.net')) {
+                        event.respondWith(
+                            fetch(request).catch(() => {
+                                return caches.match(request);
+                            })
+                        );
+                        return;
+                    }
+                    
+                    // 默认使用Cache First策略
+                    event.respondWith(
+                        caches.match(request).then(response => {
+                            return response || fetch(request).then(networkResponse => {
+                                // 只缓存成功的GET请求
+                                if (networkResponse.ok && request.method === 'GET') {
+                                    const clone = networkResponse.clone();
+                                    caches.open(CACHE_NAME).then(cache => {
+                                        cache.put(request, clone);
+                                    });
+                                }
+                                return networkResponse;
+                            });
+                        })
+                    );
+                });
+            `)).then(registration => {
+                console.log('Service Worker 注册成功:', registration);
+            }).catch(error => {
+                console.log('Service Worker 注册失败:', error);
+            });
+        }
     </script>
 </body>
 </html>
