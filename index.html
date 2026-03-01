@@ -52,15 +52,11 @@
     
     <!-- 预加载关键资源 -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" as="style" fetchpriority="high">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
     <!-- Tailwind CSS - 异步加载 -->
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script" defer>
     
     <!-- 异步加载非关键资源 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    <!-- 字体加载优化已通过CDN实现 -->
     
     <!-- Tailwind CSS - 使用defer加载配置 -->
     <script src="https://cdn.tailwindcss.com" defer></script>
@@ -288,8 +284,39 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
+    <svg style="display:none">
+        <symbol id="icon-circle-check" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></symbol>
+        <symbol id="icon-cloud" viewBox="0 0 512 512"><path fill="currentColor" d="M0 336c0 79.5 64.5 144 144 144s144-64.5 144-144-64.5-144-144-144S0 256.5 0 336zm128 0c0-35.3 28.7-64 64-64s64 28.7 64 64-28.7 64-64 64-64-28.7-64-64zm352-64c0 61.9-50.1 112-112 112s-112-50.1-112-112 50.1-112 112-112 112 50.1 112 112zm-64 0c0-26.5-21.5-48-48-48s-48 21.5-48 48 21.5 48 48 48 48-21.5 48-48zm-32-144c0 44.2-35.8 80-80 80s-80-35.8-80-80 35.8-80 80-80 80 35.8 80 80zm-48 0c0-17.7-14.3-32-32-32s-32 14.3-32 32 14.3 32 32 32 32-14.3 32-32z"/></symbol>
+        <symbol id="icon-rocket" viewBox="0 0 512 512"><path fill="currentColor" d="M142.9 96c-10.3 39.1 1.4 82 29.4 109.9l28.3 28.3c28 28 70.9 39.7 110 29.4l25.6-6.8c5.3-1.4 10.8 1.8 12.2 7.1l6.8 25.6c10.3 39.1-1.4 82-29.4 109.9L183.5 459c-28 28-70.9 39.7-110 29.4L48 481.7c-5.3-1.4-8.5-6.9-7.1-12.2l6.8-25.6c10.3-39.1-1.4-82-29.4-109.9L0 305.7c-28-28-39.7-70.9-29.4-110l6.8-25.6c1.4-5.3 6.9-8.5 12.2-7.1l25.6 6.8c39.1 10.3 82-1.4 109.9-29.4l28.3-28.3c28-28 70.9-39.7 110-29.4l25.6 6.8c5.3 1.4 8.5 6.9 7.1 12.2l-6.8 25.6c-10.3 39.1 1.4 82 29.4 109.9l28.3 28.3c28 28 39.7 70.9 29.4 110l-6.8 25.6c-1.4 5.3-6.9 8.5-12.2 7.1l-25.6-6.8c-39.1-10.3-82 1.4-109.9 29.4L156.6 384.9zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></symbol>
+        <symbol id="icon-rotate" viewBox="0 0 512 512"><path fill="currentColor" d="M142.9 96c-21.4 0-32.1 25.9-17 41L273.1 284c9.4 9.4 9.4 24.6 0 33.9L125.9 465c-15.1 15.1-4.4 41 17 41L432 506c17.7 0 32-14.3 32-32V142.9c0-21.4-25.9-32.1-41-17L317.9 273c-9.4 9.4-24.6 9.4-33.9 0L142.9 96zM464 448H208L368 288 464 192V448z"/></symbol>
+        <symbol id="icon-circle-pause" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM224 192c0-17.7 14.3-32 32-32s32 14.3 32 32V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V192zM192 192c0-17.7 14.3-32 32-32s32 14.3 32 32V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V192z"/></symbol>
+        <symbol id="icon-circle-play" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V168c0-13.3 10.7-24 24-24s24 10.7 24 24V344c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></symbol>
+        <symbol id="icon-heart-pulse" viewBox="0 0 512 512"><path fill="currentColor" d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8l0-1.6c0-70.7 57.3-128 128-128l1.6 0c36.3 0 70.7 14.7 96 39.3L256 224l30.4-30.4c25.3-24.6 59.7-39.3 96-39.3l1.6 0c70.7 0 128 57.3 128 128l0 1.6c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-7.8-7-17.6-16.6c-18.8-18.4-45.3-30.4-74.4-30.4l-1.6 0c-53 0-96 43-96 96l0 1.6c0 31.1 13.2 60.9 36.3 82.3L256 440l170.2-162.2c23.1-21.4 36.3-51.2 36.3-82.3l0-1.6c0-53-43-96-96-96l-1.6 0c-29.1 0-55.6 12-74.4 30.4c-9.8 9.6-17.2 16.3-17.6 16.6c-6.1 5.7-15.6 5.7-21.7 0zM256 384l-96-96H192l64 64 64-64h32l-96 96z"/></symbol>
+        <symbol id="icon-triangle-exclamation" viewBox="0 0 512 512"><path fill="currentColor" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></symbol>
+        <symbol id="icon-skull" viewBox="0 0 512 512"><path fill="currentColor" d="M224 0c-70.7 0-128 57.3-128 128v64c0 17.7 14.3 32 32 32h32v32H96c-53 0-96 43-96 96v64c0 17.7 14.3 32 32 32h64v32c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V416h32v32c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V416h64c17.7 0 32-14.3 32-32V320c0-53-43-96-96-96H352V288h32c17.7 0 32-14.3 32-32V192c0-70.7-57.3-128-128-128H224zM176 256a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm160 0a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></symbol>
+        <symbol id="icon-network-wired" viewBox="0 0 640 512"><path fill="currentColor" d="M96 64c0-35.3 28.7-64 64-64H480c35.3 0 64 28.7 64 64V352H512V64c0-17.7-14.3-32-32-32H160c-17.7 0-32 14.3-32 32V352H96V64zM64 448c-35.3 0-64-28.7-64-64V368H576v16c0 35.3-28.7 64-64 64H64zM320 0c17.7 0 32 14.3 32 32V96c0 17.7-14.3 32-32 32s-32-14.3-32-32V32c0-17.7 14.3-32 32-32zM128 128c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm384 0c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32z"/></symbol>
+        <symbol id="icon-shrimp" viewBox="0 0 512 512"><path fill="currentColor" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V64c0-17.7-14.3-32-32-32s-32 14.3-32 32V336c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4s-14.6 41.3 1.4 56.6L124.4 448c43.1 41.1 100.4 64 160 64h3.4c65.7 0 128.7-26.1 175.2-72.6S512 293.1 512 227.4V192c0-17.7-14.3-32-32-32s-32 14.3-32 32v35.4c0 48.3-19.2 94.6-53.4 128.8S346.3 416 298 416H284.4c-46.8 0-91.7-18.6-124.8-51.6L288 416V32z"/></symbol>
+        <symbol id="icon-server" viewBox="0 0 512 512"><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm0 160c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H64zm0 160c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H64zM200 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM96 368a48 48 0 1 1 96 0 48 48 0 1 1 -96 0z"/></symbol>
+        <symbol id="icon-terminal" viewBox="0 0 640 512"><path fill="currentColor" d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H128c-35.3 0-64-28.7-64-64V96zM272 256a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm-96 0a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm192 0a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm96 0a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></symbol>
+        <symbol id="icon-trash" viewBox="0 0 448 512"><path fill="currentColor" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></symbol>
+        <symbol id="icon-handshake-simple" viewBox="0 0 640 512"><path fill="currentColor" d="M272 96c-26.5 0-48 21.5-48 48v64H192c-26.5 0-48 21.5-48 48v64c0 26.5 21.5 48 48 48h32v64c0 26.5 21.5 48 48 48h64c26.5 0 48-21.5 48-48V368h32c26.5 0 48-21.5 48-48V256c0-26.5-21.5-48-48-48H320V144c0-26.5-21.5-48-48-48zM256 256h64v64H256V256z"/></symbol>
+        <symbol id="icon-chevron-left" viewBox="0 0 320 512"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></symbol>
+        <symbol id="icon-chevron-right" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></symbol>
+        <symbol id="icon-bars" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></symbol>
+        <symbol id="icon-cart-shopping" viewBox="0 0 576 512"><path fill="currentColor" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 47.6 21.3 47.6 47.6c0 9.6-2.9 18.9-8.2 26.8l-104.9 176c-8.7 14.6-24.4 23.6-41.6 23.6H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></symbol>
+        <symbol id="icon-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></symbol>
+        <symbol id="icon-shield-halved" viewBox="0 0 512 512"><path fill="currentColor" d="M256 0c-35.3 0-64 28.7-64 64V96H128c-35.3 0-64 28.7-64 64V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H320V64c0-35.3-28.7-64-64-64zM128 160h64v64H128V160zm0 96h64v64H128V256zm0 96h64v64H128V352zm96-192h64v64H224V160zm0 96h64v64H224V256zm0 96h64v64H224V352zm96-192h64v64H320V160zm0 96h64v64H320V256zm0 96h64v64H320V352z"/></symbol>
+        <symbol id="icon-globe" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></symbol>
+        <symbol id="icon-copy" viewBox="0 0 512 512"><path fill="currentColor" d="M272 64c-26.5 0-48 21.5-48 48v48H192c-26.5 0-48 21.5-48 48V416c0 26.5 21.5 48 48 48H416c26.5 0 48-21.5 48-48V208c0-26.5-21.5-48-48-48H368V112c0-26.5-21.5-48-48-48H272zM192 208H416V416H192V208zM272 112h48v48H272V112z"/></symbol>
+        <symbol id="icon-eye" viewBox="0 0 576 512"><path fill="currentColor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></symbol>
+        <symbol id="icon-user" viewBox="0 0 448 512"><path fill="currentColor" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zM-45.1 480C-9 480 0 464.6 0 446.1c0-81.7-66.4-148-148-148H-296c-81.6 0-148 66.3-148 148C-444 464.6-435 480-398.9 480H-45.1zM368 256A128 128 0 1 0 368 0a128 128 0 1 0 0 256zM98.9 480c36.1 0 45.1-15.4 45.1-33.9c0-81.7-66.4-148-148-148H-149c-81.6 0-148 66.3-148 148C-297 464.6-288 480-251.9 480H98.9z"/></symbol>
+        <symbol id="icon-chart-line" viewBox="0 0 512 512"><path fill="currentColor" d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V448c0 17.7 14.3 32 32 32H448c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V64zM128 192c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H160c-17.7 0-32-14.3-32-32zm96-64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zm96 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H352c-17.7 0-32-14.3-32-32z"/></symbol>
+        <symbol id="icon-users" viewBox="0 0 640 512"><path fill="currentColor" d="M96 128a128 128 0 1 0 0-256 128 128 0 1 0 0 256zm0 32c70.7 0 128-57.3 128-128S166.7 0 96 0 0 57.3 0 128s57.3 128 128 128zM448 128a128 128 0 1 0 0-256 128 128 0 1 0 0 256zm0 32c70.7 0 128-57.3 128-128S518.7 0 448 0 320 57.3 320 128s57.3 128 128 128zM224 288a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm0 224c123.7 0 224-100.3 224-224H0c0 123.7 100.3 224 224 224z"/></symbol>
+        <symbol id="icon-clock" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></symbol>
+    </svg>
+
     <div id="toast" class="toast-container">
-        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <svg class="w-5 h-5 text-green-400"><use href="#icon-circle-check"/></svg>
         <span id="toast-msg" class="text-sm font-medium">操作成功</span>
     </div>
 
@@ -302,7 +329,7 @@
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3 self-start md:self-auto">
                 <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-cloud text-white text-lg"></i>
+                    <svg class="w-5 h-5 text-white"><use href="#icon-cloud"/></svg>
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-white tracking-wide">52DH</h1>
@@ -312,16 +339,16 @@
             
             <div class="flex gap-2 self-end md:self-auto">
                 <button onclick="visitFastestNode()" class="text-xs bg-green-600/90 hover:bg-green-500 text-white px-4 py-2 rounded-md transition flex items-center gap-2 shadow-lg shadow-green-500/20 group">
-                    <i class="fa-solid fa-rocket group-hover:animate-bounce"></i> 
+                    <svg class="w-4 h-4 group-hover:animate-bounce"><use href="#icon-rocket"/></svg> 
                     <span>一键直连最快</span>
                 </button>
                 <button onclick="checkAllNodesSequentially()" class="text-xs bg-blue-600/80 hover:bg-blue-500 text-white px-3 py-2 rounded-md transition flex items-center gap-2 shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-rotate" id="refresh-icon"></i> 
+                    <svg class="w-4 h-4" id="refresh-icon"><use href="#icon-rotate"/></svg> 
                     <span>开始检测</span>
                     </button>
                 <button id="auto-btn"
     class="text-xs bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md border border-blue-400 transition flex items-center gap-2 shadow-lg shadow-blue-500/20">
-    <i id="auto-btn-icon" class="fa-solid fa-circle-pause"></i>
+    <svg class="w-4 h-4" id="auto-btn-icon"><use href="#icon-circle-pause"/></svg>
     <span id="auto-btn-text">停止自动</span>
                 </button>
             </div>
@@ -335,12 +362,12 @@
                 <div class="glass-panel status-banner rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                     <div class="flex items-center gap-4 w-full md:w-auto border-b md:border-b-0 border-slate-700/50 pb-4 md:pb-0">
                         <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 transition-colors duration-300" id="status-icon-bg">
-                            <i class="fa-solid fa-rotate text-blue-400 text-lg animate-spin" id="status-icon"></i>
+                            <svg class="w-5 h-5 text-blue-400 animate-spin" id="status-icon"><use href="#icon-rotate"/></svg>
                         </div>
                         <div>
                             <h3 class="text-base font-bold text-white" id="system-status-text">自动检测运行中</h3>
                             <div class="flex items-center gap-2 mt-1">
-                                <i class="fa-solid fa-clock text-blue-400 text-xs"></i>
+                                <svg class="w-3 h-3 text-blue-400"><use href="#icon-clock"/></svg>
                                 <p class="text-xs text-slate-400">
                                     <span id="current-testing">准备开始检测</span> · 
                                     <span id="progress-text">0/0</span> · 
@@ -369,10 +396,10 @@
 
                 <div class="flex-1 flex flex-col" id="nodes-section"> 
                     <div class="flex items-center gap-2 mb-3 px-1">
-                        <i class="fa-solid fa-network-wired text-blue-400"></i>
+                        <svg class="w-5 h-5 text-blue-400"><use href="#icon-network-wired"/></svg>
                         <h2 class="font-semibold text-white">在线小工具[点击下方跳转]</h2>
                         <span class="text-xs text-slate-500 ml-auto flex items-center gap-2">
-                            <i class="fa-solid fa-rotate"></i> 每60秒自动检测
+                            <svg class="w-3 h-3"><use href="#icon-rotate"/></svg> 每60秒自动检测
                         </span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 h-full content-start" id="node-container">
@@ -381,7 +408,7 @@
 
                 <div class="flex-1 flex flex-col mt-6" id="openclaw-section">
                     <div class="flex items-center gap-2 mb-3 px-1">
-                        <i class="fa-solid fa-shrimp text-purple-400"></i>
+                        <svg class="w-5 h-5 text-purple-400"><use href="#icon-shrimp"/></svg>
                         <h2 class="font-semibold text-white">OpenClaw AI</h2>
                         <span class="text-xs text-slate-500 ml-auto">AI工具集合</span>
                     </div>
@@ -391,7 +418,7 @@
 
                 <div class="flex-1 flex flex-col mt-6" id="data-section">
                     <div class="flex items-center gap-2 mb-3 px-1">
-                        <i class="fa-solid fa-server text-green-400"></i>
+                        <svg class="w-5 h-5 text-green-400"><use href="#icon-server"/></svg>
                         <h2 class="font-semibold text-white">VPS服务器</h2>
                         <span class="text-xs text-slate-500 ml-auto">VPS服务</span>
                     </div>
@@ -401,7 +428,7 @@
 
                 <div class="flex-1 flex flex-col mt-6 hidden" id="ssh-section">
                     <div class="flex items-center gap-2 mb-3 px-1">
-                        <i class="fa-solid fa-terminal text-orange-400"></i>
+                        <svg class="w-5 h-5 text-orange-400"><use href="#icon-terminal"/></svg>
                         <h2 class="font-semibold text-white">SSH</h2>
                         <span class="text-xs text-slate-500 ml-auto">远程连接工具</span>
                     </div>
@@ -411,7 +438,7 @@
 
                 <div class="flex-1 flex flex-col mt-6 hidden" id="delete-section">
                     <div class="flex items-center gap-2 mb-3 px-1">
-                        <i class="fa-solid fa-trash text-red-400"></i>
+                        <svg class="w-5 h-5 text-red-400"><use href="#icon-trash"/></svg>
                         <h2 class="font-semibold text-white">删除</h2>
                         <span class="text-xs text-slate-500 ml-auto">清理工具</span>
                     </div>
@@ -423,7 +450,7 @@
             <div class="lg:col-span-3 flex flex-col gap-5">
                 <div class="glass-panel rounded-xl p-1.5 hidden">
                     <a href="https://t.me/" target="_blank" class="biz-btn w-full rounded-lg py-3 px-4 flex items-center justify-center gap-2 text-white font-bold shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition transform hover:scale-[1.02] active:scale-95">
-                        <i class="fa-solid fa-handshake-simple text-xl"></i>
+                        <svg class="w-5 h-5"><use href="#icon-handshake-simple"/></svg>
                         <span>商务合作洽谈</span>
                     </a>
                 </div>
@@ -432,46 +459,47 @@
 
                 <div id="float-nav" class="glass-panel rounded-xl p-5 fixed right-0 top-24 w-64 z-50 max-h-[calc(100vh-120px)] overflow-y-auto transform translate-x-[calc(100%-2rem)] hover:translate-x-0 transition-transform duration-300 ease-out">
                     <div class="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-pointer">
-                        <i class="fa-solid fa-chevron-left text-slate-400 text-xs"></i>
+                        <svg class="w-4 h-4 text-slate-400"><use href="#icon-chevron-left"/></svg>
                     </div>
                     <h3 class="font-semibold text-white mb-4 text-sm flex items-center gap-2 pl-6">
-                        <i class="fa-solid fa-bars text-slate-400"></i> 快速导航
+                        <svg class="w-4 h-4"><use href="#icon-handshake-simple"/></svg>
+                        快速导航
                     </h3>
                     <div class="space-y-2.5 pl-6">
                         <a href="#nodes-section" onclick="scrollToSection('nodes-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-network-wired text-blue-400 text-lg"></i>
+                                <svg class="w-5 h-5 text-blue-400"><use href="#icon-network-wired"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">在线小工具</span>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
+                            <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
                         <a href="#openclaw-section" onclick="scrollToSection('openclaw-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-shrimp text-purple-400 text-lg"></i>
+                                <svg class="w-5 h-5 text-purple-400"><use href="#icon-shrimp"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">OpenClaw AI</span>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
+                            <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
                         <a href="#data-section" onclick="scrollToSection('data-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-server text-green-400 text-lg"></i>
+                                <svg class="w-5 h-5 text-green-400"><use href="#icon-server"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">VPS服务器</span>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
+                            <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
                         <a href="#ssh-section" onclick="scrollToSection('ssh-section')" class="hidden flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-terminal text-orange-400 text-lg"></i>
+                                <svg class="w-5 h-5 text-orange-400"><use href="#icon-terminal"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">SSH</span>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
+                            <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
                         <a href="#delete-section" onclick="scrollToSection('delete-section')" class="hidden flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-trash text-red-400 text-lg"></i>
+                                <svg class="w-5 h-5 text-red-400"><use href="#icon-trash"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">删除</span>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-white"></i>
+                            <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
                     </div>
                 </div>
@@ -479,11 +507,11 @@
                 <!-- 新增的发卡网区块 -->
                 <div class="glass-panel rounded-xl p-1.5 hidden">
                     <a href="" target="_blank" class="faka-btn w-full rounded-lg py-3 px-4 flex items-center justify-center gap-2 text-white font-bold shadow-lg shadow-green-500/30 hover:shadow-green-500/50 transition transform hover:scale-[1.02] active:scale-95">
-                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <svg class="w-5 h-5"><use href="#icon-cart-shopping"/></svg>
                         <span>购买TG/推特等账号</span>
                     </a>
                     <a href="" target="_blank" class="appleid-btn w-full rounded-lg py-3 px-4 flex items-center justify-center gap-2 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition transform hover:scale-[1.02] active:scale-95">
-                        <i class="fa-brands fa-apple text-xl"></i>
+                        <svg class="w-5 h-5"><use href="#icon-apple"/></svg>
                         <span>Apple ID 共享账号</span>
                     </a>
                 </div>
@@ -491,7 +519,7 @@
 
             <div class="lg:col-span-12 mt-2">
                 <div class="flex items-center gap-2 mb-3 px-1">
-                    <i class="fa-solid fa-shield-halved text-indigo-400"></i>
+                    <svg class="w-5 h-5 text-indigo-400"><use href="#icon-shield-halved"/></svg>
                     <h2 class="font-semibold text-white">防失联发布页</h2>
                     <span class="text-xs text-slate-500 ml-auto">建议收藏保存</span>
                 </div>
@@ -499,7 +527,7 @@
                     <a href="https://52dh.cc.cd/" target="_blank" class="domain-card rounded-xl p-4 flex items-center justify-between group relative overflow-hidden release-link">
                         <div class="flex items-center gap-3 z-10">
                             <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:text-white group-hover:bg-blue-500 transition">
-                                <i class="fa-solid fa-globe text-xl"></i>
+                                <svg class="w-5 h-5"><use href="#icon-globe"/></svg>
                             </div>
                             <div>
                                 <div class="font-bold text-white text-lg tracking-wide">https://52dh.cc.cd/</div>
@@ -507,13 +535,13 @@
                             </div>
                         </div>
                         <button onclick="copyText(event, 'https://52dh.cc.cd/')" class="release-domain-copy-btn z-20 bg-slate-800 hover:bg-white hover:text-blue-600 text-slate-400 text-xs px-3 py-2 rounded-lg border border-slate-600 hover:border-white transition flex items-center gap-1">
-                            <i class="fa-regular fa-copy"></i> 复制
+                            <svg class="w-4 h-4"><use href="#icon-copy"/></svg> 复制
                         </button>
                     </a>
                     <a href="https://52dh.cc.cd/" target="_blank" class="domain-card rounded-xl p-4 flex items-center justify-between group relative overflow-hidden release-link">
                         <div class="flex items-center gap-3 z-10">
                             <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:text-white group-hover:bg-purple-500 transition">
-                                <i class="fa-solid fa-globe text-xl"></i>
+                                <svg class="w-5 h-5"><use href="#icon-globe"/></svg>
                             </div>
                             <div>
                                 <div class="font-bold text-white text-lg tracking-wide">https://52dh.cc.cd/</div>
@@ -521,13 +549,13 @@
                             </div>
                         </div>
                         <button onclick="copyText(event, 'https://52dh.cc.cd/')" class="release-domain-copy-btn z-20 bg-slate-800 hover:bg-white hover:text-purple-600 text-slate-400 text-xs px-3 py-2 rounded-lg border border-slate-600 hover:border-white transition flex items-center gap-1">
-                            <i class="fa-regular fa-copy"></i> 复制
+                            <svg class="w-4 h-4"><use href="#icon-copy"/></svg> 复制
                         </button>
                     </a>
                     <a href="https://52dh.cc.cd/" target="_blank" class="domain-card rounded-xl p-4 flex items-center justify-between group relative overflow-hidden release-link">
                         <div class="flex items-center gap-3 z-10">
                             <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400 group-hover:text-white group-hover:bg-pink-500 transition">
-                                <i class="fa-solid fa-globe text-xl"></i>
+                                <svg class="w-5 h-5"><use href="#icon-globe"/></svg>
                             </div>
                             <div>
                                 <div class="font-bold text-white text-lg tracking-wide">https://52dh.cc.cd/</div>
@@ -535,7 +563,7 @@
                             </div>
                         </div>
                         <button onclick="copyText(event, 'https://52dh.cc.cd/')" class="release-domain-copy-btn z-20 bg-slate-800 hover:bg-white hover:text-pink-600 text-slate-400 text-xs px-3 py-2 rounded-lg border border-slate-600 hover:border-white transition flex items-center gap-1">
-                            <i class="fa-regular fa-copy"></i> 复制
+                            <svg class="w-4 h-4"><use href="#icon-copy"/></svg> 复制
                         </button>
                     </a>
                 </div>
@@ -549,19 +577,19 @@
         <!-- 不蒜子统计信息 - 使用标准ID -->
         <div class="busuanzi-stats">
             <div class="busuanzi-stat-item">
-                <i class="fas fa-eye text-blue-400"></i>
+                <svg class="w-4 h-4 text-blue-400"><use href="#icon-eye"/></svg>
                 今日总访问量 <span id="busuanzi_today_pv">加载中...</span> 次
             </div>
             <div class="busuanzi-stat-item">
-                <i class="fas fa-user text-green-400"></i>
+                <svg class="w-4 h-4 text-green-400"><use href="#icon-user"/></svg>
                 今日总访客数 <span id="busuanzi_today_uv">加载中...</span> 人
             </div>
             <div class="busuanzi-stat-item">
-                <i class="fas fa-chart-line text-purple-400"></i>
+                <svg class="w-4 h-4 text-purple-400"><use href="#icon-chart-line"/></svg>
                 本站总访问量 <span id="busuanzi_site_pv">加载中...</span> 次
             </div>
             <div class="busuanzi-stat-item">
-                <i class="fas fa-users text-yellow-400"></i>
+                <svg class="w-4 h-4 text-yellow-400"><use href="#icon-users"/></svg>
                 本站总访客数 <span id="busuanzi_site_uv">加载中...</span> 人
             </div>
         </div>
@@ -699,7 +727,7 @@
                         <div class="flex justify-between items-start z-10">
                             <span class="text-sm font-bold text-slate-400 group-hover:text-white transition">${node.name}</span>
                             <div class="flex items-center gap-1">
-                                <i id="${idPrefix}jitter-${index}" class="fa-solid fa-chart-line text-[10px] text-orange-400 opacity-0 transition" title="线路抖动检测"></i>
+                                <svg id="${idPrefix}jitter-${index}" class="w-2.5 h-2.5 text-orange-400 opacity-0 transition" title="线路抖动检测"><use href="#icon-chart-line"/></svg>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 mt-3 z-10">
@@ -742,17 +770,19 @@
         function updateAutoRefreshButton() {
             if (autoRefresh) {
                 autoBtn.className = "text-xs bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md border border-blue-400 transition flex items-center gap-2";
-                autoBtnIcon.className = "fa-solid fa-circle-pause";
+                autoBtnIcon.querySelector('use').setAttribute('href', '#icon-circle-pause');
                 autoBtnText.textContent = "停止自动";
                 systemStatusText.textContent = "自动检测运行中";
-                statusIcon.className = "fa-solid fa-rotate text-blue-400 text-lg animate-spin";
+                statusIcon.querySelector('use').setAttribute('href', '#icon-rotate');
+                statusIcon.className = "w-5 h-5 text-blue-400 animate-spin";
                 statusIconBg.className = "w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 transition-colors duration-300";
             } else {
                 autoBtn.className = "text-xs bg-slate-800/80 hover:bg-slate-700 text-blue-300 px-3 py-2 rounded-md border border-slate-700 transition flex items-center gap-2";
-                autoBtnIcon.className = "fa-solid fa-circle-play";
+                autoBtnIcon.querySelector('use').setAttribute('href', '#icon-circle-play');
                 autoBtnText.textContent = "开始自动";
                 systemStatusText.textContent = "手动检测模式";
-                statusIcon.className = "fa-solid fa-heart-pulse text-slate-400 text-lg";
+                statusIcon.querySelector('use').setAttribute('href', '#icon-heart-pulse');
+                statusIcon.className = "w-5 h-5 text-slate-400";
                 statusIconBg.className = "w-10 h-10 rounded-full bg-slate-500/10 flex items-center justify-center shrink-0 transition-colors duration-300";
             }
         }
@@ -808,7 +838,7 @@
             if (refreshTimer) clearTimeout(refreshTimer);
             if (countdownTimer) clearInterval(countdownTimer);
             
-            refreshIcon.classList.add('fa-spin');
+            refreshIcon.classList.add('animate-spin');
             
             const totalNodes = getTotalNodesCount();
             currentStats = { total: totalNodes, completed: 0, active: 0, totalLatency: 0 };
@@ -864,7 +894,7 @@
             }
 
             // 测试完成
-            refreshIcon.classList.remove('fa-spin');
+            refreshIcon.classList.remove('animate-spin');
             isTesting = false;
             currentTestingEl.innerText = "检测完成";
             
@@ -1194,31 +1224,37 @@
                 if(count >= 5) {
                     if (autoRefresh) {
                         systemStatusText.innerText = "自动检测运行中";
-                        statusIcon.className = "fa-solid fa-rotate text-blue-400 text-lg animate-spin";
+                        statusIcon.querySelector('use').setAttribute('href', '#icon-rotate');
+                        statusIcon.className = "w-5 h-5 text-blue-400 animate-spin";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0";
                     } else {
                         systemStatusText.innerText = "系统运行正常";
-                        statusIcon.className = "fa-solid fa-heart-pulse text-green-400 text-lg";
+                        statusIcon.querySelector('use').setAttribute('href', '#icon-heart-pulse');
+                        statusIcon.className = "w-5 h-5 text-green-400";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0";
                     }
                 } else if (count >= 3) {
                     if (autoRefresh) {
                         systemStatusText.innerText = "自动检测运行中";
-                        statusIcon.className = "fa-solid fa-rotate text-blue-400 text-lg animate-spin";
+                        statusIcon.querySelector('use').setAttribute('href', '#icon-rotate');
+                        statusIcon.className = "w-5 h-5 text-blue-400 animate-spin";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0";
                     } else {
                         systemStatusText.innerText = "部分线路拥堵";
-                        statusIcon.className = "fa-solid fa-triangle-exclamation text-yellow-400 text-lg";
+                        statusIcon.querySelector('use').setAttribute('href', '#icon-triangle-exclamation');
+                        statusIcon.className = "w-5 h-5 text-yellow-400";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center shrink-0";
                     }
                 } else {
                     if (autoRefresh) {
                         systemStatusText.innerText = "自动检测运行中";
-                        statusIcon.className = "fa-solid fa-rotate text-blue-400 text-lg animate-spin";
+                        statusIcon.querySelector('use').setAttribute('href', '#icon-rotate');
+                        statusIcon.className = "w-5 h-5 text-blue-400 animate-spin";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0";
                     } else {
                         systemStatusText.innerText = "系统维护中";
-                        statusIcon.className = "fa-solid fa-skull text-red-500 text-lg";
+                        statusIcon.querySelector('use').setAttribute('href', '#icon-skull');
+                        statusIcon.className = "w-5 h-5 text-red-500";
                         statusIconBg.className = "w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0";
                     }
                 }
