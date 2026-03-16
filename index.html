@@ -33,20 +33,20 @@
     <style>
         /* 关键首屏样式 */
         body {
-            font-family: 'Inter'， sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #0f172a;
             color: #e2e8f0;
             overflow-x: hidden;
         }
         .glass-panel {
-            background: rgba(30， 41， 59， 0.4);
+            background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255， 255， 255， 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .node-card {
-            background: rgba(30， 41， 59， 0.6);
-            border: 1px solid rgba(255， 255， 255， 0.05);
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
     
@@ -68,34 +68,34 @@
 
     <style>
         body {
-            font-family: 'Inter'， sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #0f172a;
             color: #e2e8f0;
             overflow-x: hidden;
         }
 
-        。bg-glow {
+        .bg-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 0%， #1e1b4b 0%， #0f172a 60%);
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 60%);
         }
-        。blob {
+        .blob {
             position: absolute;
             filter: blur(90px); opacity: 0.5; 
             will-change: transform;
         }
         /* 移除动画以减少CPU使用，或使用更高效的动画 */
         @media (prefers-reduced-motion: no-preference) {
-            。blob {
+            .blob {
                 animation: move 20s infinite alternate;
             }
         }
         @keyframes move {
-            0% { transform: translate3d(0， 0， 0); }
-            100% { transform: translate3d(50px， 30px， 0); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(50px, 30px, 0); }
         }
         
-        。glass-panel {
+        .glass-panel {
             background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -112,7 +112,7 @@
             overflow: hidden;
             will-change: transform;
         }
-        。node-card:hover {
+        .node-card:hover {
             background: rgba(51, 65, 85, 0.8);
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px); 
@@ -138,7 +138,7 @@
             transform: translateY(-2px);
         }
 
-        。biz-btn {
+        .biz-btn {
             background: linear-gradient(90deg, #ec4899, #8b5cf6);
             background-size: 200% 200%; 
             animation: gradientMove 3s ease infinite;
@@ -168,7 +168,7 @@
             box-shadow: 0 0 8px currentColor; 
         }
         .status-fast { color: #4ade80; } 
-        。status-med { color: #facc15; } 
+        .status-med { color: #facc15; } 
         .status-slow { color: #f87171; }
         .status-offline { color: #94a3b8; }
 
@@ -183,7 +183,7 @@
             opacity: 0.5;
         }
 
-        。toast-container {
+        .toast-container {
             position: fixed;
             bottom: 30px; 
             left: 50%; 
@@ -208,7 +208,7 @@
             transform: translateX(-50%) translateY(0); 
         }
         
-        。progress-ring {
+        .progress-ring {
             transform: rotate(-90deg);
         }
         .progress-ring-circle {
@@ -219,7 +219,7 @@
         * {
             box-sizing: border-box;
         }
-        。node-card {
+        .node-card {
             will-change: transform, background-color;
         }
         .blob {
@@ -239,7 +239,7 @@
         }
 
         /* 不蒜子统计样式 */
-        。busuanzi-stats {
+        .busuanzi-stats {
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -398,7 +398,7 @@
                             <svg class="w-3 h-3"><use href="#icon-rotate"/></svg> 每60秒自动检测
                         </span>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 h-full content-start" id="node-container">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start" id="node-container">
                     </div>
                 </div>
 
@@ -408,7 +408,7 @@
                         <h2 class="font-semibold text-white">OpenClaw AI</h2>
                         <span class="text-xs text-slate-500 ml-auto">AI工具集合</span>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 h-full content-start" id="openclaw-container">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start" id="openclaw-container">
                     </div>
                 </div>
 
@@ -418,7 +418,7 @@
                         <h2 class="font-semibold text-white">VPS服务器</h2>
                         <span class="text-xs text-slate-500 ml-auto">VPS服务</span>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 h-full content-start" id="data-container">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start" id="data-container">
                     </div>
                 </div>
 
@@ -428,7 +428,7 @@
                         <h2 class="font-semibold text-white">SSH</h2>
                         <span class="text-xs text-slate-500 ml-auto">远程连接工具</span>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 h-full content-start" id="ssh-container">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start" id="ssh-container">
                     </div>
                 </div>
 
@@ -438,7 +438,7 @@
                         <h2 class="font-semibold text-white">删除</h2>
                         <span class="text-xs text-slate-500 ml-auto">清理工具</span>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 h-full content-start" id="delete-container">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 h-full content-start" id="delete-container">
                     </div>
                 </div>
             </div>
@@ -453,7 +453,7 @@
 
 
 
-                <div id="float-nav" class="glass-panel rounded-xl p-5 fixed right-0 top-24 w-64 z-50 max-h-[calc(100vh-120px)] overflow-y-auto transform translate-x-[calc(100%-2rem)] hover:translate-x-0 transition-transform duration-300 ease-out">
+                <div id="float-nav" class="glass-panel rounded-xl p-5 fixed right-0 top-24 w-64 z-50 max-h-[calc(100vh-120px)] overflow-y-auto transform translate-x-[calc(100%-2rem)] hover:translate-x-0 transition-transform duration-300 ease-out md:w-72">
                     <div class="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-pointer">
                         <svg class="w-4 h-4 text-slate-400"><use href="#icon-chevron-left"/></svg>
                     </div>
@@ -462,35 +462,35 @@
                         快速导航
                     </h3>
                     <div class="space-y-2.5 pl-6">
-                        <a href="#nodes-section" onclick="scrollToSection('nodes-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
+                        <a href="#nodes-section" onclick="scrollToSection(event, 'nodes-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-blue-400"><use href="#icon-network-wired"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">在线小工具</span>
                             </div>
                             <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
-                        <a href="#openclaw-section" onclick="scrollToSection('openclaw-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
+                        <a href="#openclaw-section" onclick="scrollToSection(event, 'openclaw-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-purple-400"><use href="#icon-shrimp"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">OpenClaw AI</span>
                             </div>
                             <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
-                        <a href="#data-section" onclick="scrollToSection('data-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
+                        <a href="#data-section" onclick="scrollToSection(event, 'data-section')" class="flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-green-400"><use href="#icon-server"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">VPS服务器</span>
                             </div>
                             <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
-                        <a href="#ssh-section" onclick="scrollToSection('ssh-section')" class="hidden flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
+                        <a href="#ssh-section" onclick="scrollToSection(event, 'ssh-section')" class="hidden flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-orange-400"><use href="#icon-terminal"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">SSH</span>
                             </div>
                             <svg class="w-2.5 h-2.5 text-slate-600 group-hover:text-white"><use href="#icon-chevron-right"/></svg>
                         </a>
-                        <a href="#delete-section" onclick="scrollToSection('delete-section')" class="hidden flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
+                        <a href="#delete-section" onclick="scrollToSection(event, 'delete-section')" class="hidden flex items-center justify-between bg-slate-800/40 hover:bg-slate-700/60 border border-transparent hover:border-slate-600 rounded-lg px-4 py-2.5 transition group cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-red-400"><use href="#icon-trash"/></svg>
                                 <span class="text-sm text-slate-300 group-hover:text-white">删除</span>
@@ -1286,8 +1286,8 @@
             });
         }
 
-        function scrollToSection(sectionId) {
-            event.preventDefault();
+        function scrollToSection(event, sectionId) {
+            if (event) event.preventDefault();
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1437,30 +1437,10 @@ if (autoBtn) {
                         return;
                     }
                     
-                    // Google AdSense资源使用Network First策略
-                    if (url.hostname.includes('googlesyndication.com') ||
-                        url.hostname.includes('doubleclick.net')) {
-                        event.respondWith(
-                            fetch(request).catch(() => {
-                                return caches.match(request);
-                            })
-                        );
-                        return;
-                    }
-                    
-                    // 默认使用Cache First策略
+                    // 其他资源使用Network-First策略
                     event.respondWith(
-                        caches.match(request).then(response => {
-                            return response || fetch(request).then(networkResponse => {
-                                // 只缓存成功的GET请求
-                                if (networkResponse.ok && request.method === 'GET') {
-                                    const clone = networkResponse.clone();
-                                    caches.open(CACHE_NAME).then(cache => {
-                                        cache.put(request, clone);
-                                    });
-                                }
-                                return networkResponse;
-                            });
+                        fetch(request).catch(() => {
+                            return caches.match(request);
                         })
                     );
                 });
